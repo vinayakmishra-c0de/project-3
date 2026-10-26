@@ -1,0 +1,6 @@
+{
+  "name": "NEPS Uniform Store",
+  "description": "New Era Public School (NEPS) Uniform Inventory Management and POS Billing System with real-time stock HUD, inflows, outflows, dead stock, and universal recycle bin.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

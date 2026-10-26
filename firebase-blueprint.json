@@ -1,0 +1,172 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated administrator profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "superadmin"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Store item category definition",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "codePrefix": { "type": "string" },
+        "description": { "type": "string" },
+        "division": { "type": "string", "enum": ["uniform", "books"] }
+      },
+      "required": ["id", "name", "codePrefix", "division"]
+    },
+    "ItemVariant": {
+      "title": "ItemVariant",
+      "description": "SKU and stock variant record for uniforms and books",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "division": { "type": "string", "enum": ["uniform", "books"] },
+        "code": { "type": "string" },
+        "size": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "number" },
+        "minStock": { "type": "number" },
+        "rackLocation": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "division", "code", "price", "stock"]
+    },
+    "StockInflow": {
+      "title": "StockInflow",
+      "description": "Stock inflow record from vendor or press",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "invoiceNumber": { "type": "string" },
+        "supplierName": { "type": "string" },
+        "date": { "type": "string" },
+        "division": { "type": "string", "enum": ["uniform", "books"] },
+        "totalQuantity": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "invoiceNumber", "supplierName", "date", "division", "totalQuantity", "totalAmount"]
+    },
+    "StockOutflow": {
+      "title": "StockOutflow",
+      "description": "Stock outflow requisition record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "destination": { "type": "string" },
+        "requisitionNumber": { "type": "string" },
+        "authorizedBy": { "type": "string" },
+        "date": { "type": "string" },
+        "division": { "type": "string", "enum": ["uniform", "books"] },
+        "totalQuantity": { "type": "number" },
+        "reason": { "type": "string" }
+      },
+      "required": ["id", "destination", "authorizedBy", "date", "division", "totalQuantity"]
+    },
+    "StudentSale": {
+      "title": "StudentSale",
+      "description": "POS student sale and billing transaction",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "billNumber": { "type": "string" },
+        "date": { "type": "string" },
+        "studentName": { "type": "string" },
+        "studentClass": { "type": "string" },
+        "rollNoAdmission": { "type": "string" },
+        "contactNo": { "type": "string" },
+        "division": { "type": "string", "enum": ["uniform", "books"] },
+        "subtotal": { "type": "number" },
+        "discountType": { "type": "string", "enum": ["flat", "percent"] },
+        "discountValue": { "type": "number" },
+        "totalDiscount": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "paymentMode": { "type": "string" },
+        "cashierName": { "type": "string" },
+        "notes": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "billNumber", "date", "studentName", "division", "totalAmount", "paymentMode"]
+    },
+    "DeadStock": {
+      "title": "DeadStock",
+      "description": "Damaged or retired stock record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "itemId": { "type": "string" },
+        "itemName": { "type": "string" },
+        "category": { "type": "string" },
+        "division": { "type": "string", "enum": ["uniform", "books"] },
+        "size": { "type": "string" },
+        "quantity": { "type": "number" },
+        "costPerUnit": { "type": "number" },
+        "reason": { "type": "string" },
+        "reportedDate": { "type": "string" },
+        "status": { "type": "string" },
+        "remarks": { "type": "string" }
+      },
+      "required": ["id", "itemId", "itemName", "division", "quantity", "costPerUnit", "reason", "status"]
+    },
+    "RecycleBinItem": {
+      "title": "RecycleBinItem",
+      "description": "Soft-deleted entity kept in recycle bin",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "originalId": { "type": "string" },
+        "type": { "type": "string" },
+        "division": { "type": "string", "enum": ["uniform", "books"] },
+        "deletedAt": { "type": "string" }
+      },
+      "required": ["id", "originalId", "type", "division", "deletedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles for authenticated school administrators"
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Store inventory categories"
+    },
+    "/inventory/{itemId}": {
+      "schema": "ItemVariant",
+      "description": "All item variants and SKU stock records"
+    },
+    "/inflows/{inflowId}": {
+      "schema": "StockInflow",
+      "description": "Stock inflow logs"
+    },
+    "/outflows/{outflowId}": {
+      "schema": "StockOutflow",
+      "description": "Stock outflow logs"
+    },
+    "/sales/{saleId}": {
+      "schema": "StudentSale",
+      "description": "POS billing invoices and sales records"
+    },
+    "/deadstock/{deadStockId}": {
+      "schema": "DeadStock",
+      "description": "Defective and damaged stock records"
+    },
+    "/recyclebin/{recycleId}": {
+      "schema": "RecycleBinItem",
+      "description": "Recycled / recoverable deleted entries"
+    }
+  }
+}

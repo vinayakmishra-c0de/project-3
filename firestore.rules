@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Test connection doc
+    match /test/connection {
+      allow read, write: if true;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Store Categories
+    match /categories/{categoryId} {
+      allow read, write: if true;
+    }
+
+    // Inventory items
+    match /inventory/{itemId} {
+      allow read, write: if true;
+    }
+
+    // Inflows
+    match /inflows/{inflowId} {
+      allow read, write: if true;
+    }
+
+    // Outflows
+    match /outflows/{outflowId} {
+      allow read, write: if true;
+    }
+
+    // Sales transactions
+    match /sales/{saleId} {
+      allow read, write: if true;
+    }
+
+    // Dead Stock
+    match /deadstock/{deadStockId} {
+      allow read, write: if true;
+    }
+
+    // Recycle Bin
+    match /recyclebin/{recycleId} {
+      allow read, write: if true;
+    }
+  }
+}
